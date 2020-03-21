@@ -59,5 +59,50 @@ Começar com o código básico abaixo apenas para subir o server
 ###### Acesso ao server
 Pronto. Podemos acessar através de **[http://localhost:3001/]**
 
+## Configurando Rotas
 
-    
+###### Rota raiz /
+Utilizar o comando abaixo dentro do arquivo **server.js** para retornar um resultado ao acessar a raiz do servidor via GET.
+
+    app.get('/',(req, res) => {
+        res.send('Hello RocketSeat');
+    });
+
+**req** receberá todos os parâmetros e **res** retornará um resutlado
+Código final ficará assim: 
+
+    const express = require('express');
+
+    const app = express();
+
+    app.get('/',(req, res) => {
+        res.send('Hello RocketSeat');
+    });
+
+    app.listen(3001);
+
+## Utilizando Nodemon
+Faz utomaticamente a reinicialização do servidor sempre que alterarmos alguma coisa no código.
+
+###### Instalar:
+Código abaixo, utilizando **-D** para utilizar somente como dependência de desenvolviento.
+
+    npm install -D nodemon
+
+###### Config nodemon
+Acessar o arquivo **package.json** e incluir a linha abaixo dentro da tag **scripts**.
+
+    "dev" : "nodemon server.js"
+
+Ficará assim o trecho: 
+
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev" : "nodemon server.js"
+    },
+
+###### Iniciar o server
+A partir de agora utilizaremos o comando abaixo para iniciar o server
+
+    npm run dev
+
