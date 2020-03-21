@@ -106,3 +106,62 @@ A partir de agora utilizaremos o comando abaixo para iniciar o server
 
     npm run dev
 
+## Instalando MongoDB
+Próximo passo seria instalar o mongoDB (nosso banco de dados) na máquina. Porám, primeiramente instalaremos o **docker**.
+
+## Instalar Docker
+Permite fazer a conteinerização de recursos ou softwares dentro de nossa máquina.
+O container servirá para que possamos fazer todas as instalações de desenvolvimento em uma máquina virtual, e quando precisarmos recuperar a mesma, estará prontinha. (em caso de formatação de PC por exemplo, não precisará instalar tudo novamente). O Mongo ficará instanciado dentro do container docker.
+
+Baixar o docker através do site [https://docker.com] ou acesse diretamente a documentação em [https://docs.docker.com/]. Baixe a versão de seu SO.
+
+**OBS:** Quando **Windows**, cuidado que no next-next ele questionará se deseja subir o servidor através de uma máquina virtual Windows ao invés de Lunux. Não marque esta opção, mantenha cmo Linux.
+
+## Instalar o Mongo
+Agora sim, instalaremos o MongDB dentro do container do Docker.
+
+###### Start
+Rodar o comando abaixo dentro do docker: 
+
+    docker pull mongo
+
+###### rodar o mongo
+Comando abaixo:
+
+    docker run --name mongodb -p 27017:27017 -d mongo
+
+Comando **--name** é como chamaremos o mongo. Comando **-p** irá fazer o redirecionamento de portas (basicamente dissemos que quando acessarmos a porta 27017 de nossa máquina ele irá acessar a porta 27017 do mongoDB - sua porta padrão).
+
+###### Verificar imagens (containers)
+Rodar o comando abaixo para verificar quais imagens o docker está rodando e se está rodando o mongo
+
+    docker ps
+
+Observação: O comando abaixo também permite verificar outras imagens que possam não estar rodando no momento ou que estejam desligadas. Ex: Banco MariaBD, outra imagem do Mongo, etc...
+
+    docker ps -a
+
+Para **subir** uma aplicação que encontra-se desligada, utilizar o comando abaixo passando o nome da imagem:
+
+    docker start mongodb
+
+###### Verificar execução do MongoDB
+Rodar o comando abaixo na máquina local e deverá acessar corretamente
+
+    localhost:27017
+
+##### Testar e verificar databases
+Utilizar o software Robo3T que é um gerenciador SGDB.
+
+##### Download Robo3T
+Acessar [https://robomongo.org/download]
+
+Instalar o Mongo3T e adicionar conexão ao banco de dados loca.
+
+**IMPORTANT!**
+Não consegui instalar o docker em minha máquina, pois meu windows é 10 Home e não é suportado pelo Hiper-v.
+POr isto criei no site do MongoDB um cloud gratuido, onde me disponibilizam um container do mongo.
+Porém, o ideal, seria pelo menos criar uma máquina virtual Linux utilizando Virtual Box por exemplo e fazer as instalações do Docker e MongoBD com os passos acima dentro desta máquina Linux mesmo, levantando um server de banco de dados local ou no servidor da rede interna.
+
+## Conexão com Database
+
