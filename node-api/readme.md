@@ -418,6 +418,177 @@ Arquivo final:
 ##### Acesso
 Pronto. Pode ser acessada a rota através de [http://localhost:3001/api/products] ou [endereco:porta/api/products]
 
-## Utilizando Insomnia
+## Utilizando Insomnia 
+Plugin para debug de ApI Rest (Semelhante ao POSTMAN)
 
+Baixar em [https://insomnia.rest/]
 
+Fazer uma requisição **GET** pelo Insomnia em: 
+
+    http://localhost:3001/api/products
+
+Deverá retornar um **JSON** com os Produtos cadastrados no Banco de Dados, se houver.
+
+OU 
+
+## Utilizando Postman 
+Plugin para debug de ApI Rest (Semelhante ao INSOMNIA)
+
+Baixar em [https://www.postman.com/]
+
+Fazer uma requisição **GET** pelo POSTMAN em: 
+
+    http://localhost:3001/api/products
+
+Deverá retornar um **JSON** com os Produtos cadastrados no Banco de Dados, se houver.
+
+## Criação de Registro BD
+
+##### Método create
+No arquivo **ProdutoController.js**, adicionar o método create após o index
+
+```js
+    const mongoose = require('mongoose');
+    const Product = mongoose.model('Product');
+
+    module.exports = {
+        //Método index
+        async index(req, res) { 
+            //Busca produtos
+            const products = await Product.find();
+            
+            return res.json(products);
+        },
+
+        //Método Create
+        async create(req, res){
+            //Cria o produto recebido via JSON
+            const product = await Product.create(req.body);
+            //Retorna um JSON com o produto criado
+            return res.json(product);
+        }
+    };
+```
+
+##### Rota create
+Adicionar dentro do arquivo **routes.js** a roda do create com método POST
+
+```js
+    routes.post('/products',ProductController.create);
+```
+
+##### Permitir receber JSON
+No arquivo principal **server.js**, acrescentar a linha de código abaixo da inicialização do app.
+Isto irá permitir que enviemos dados via JSON para a API
+
+```js
+    app.use(express.json());
+```
+
+##### Criando via POST
+Através do Insomnia ou Postman, envie um JSON via post para o endereço abaixo, com o conteúdo que também encontra-se abaixo.
+
+    [http://localhost:3001/api/products]
+
+conteúdo Json Post:
+
+```json
+    {
+        "title": "React Native 2",
+        "description": "Build native with React",
+        "url": "http://github.com/facebook/react-native"
+    }
+```
+Deverá retornar um JSON com produto criado no Banco conforme retorno do nosso método create()
+Para verificar envie uma nova requisição via GET e receba os produtos cadastrados.
+
+## CRUD
+Criar todas as rotas para formar um CRUD completo
+
+##### Adicionar o método View
+No arquivo **ProductController.js**, adicionar o método abaixo, junto com os demais para que seja possível consultar e retornar um produto pelo ID.
+
+```js
+    //Método View
+    async view(req,res){
+        const product = await Product.findById(req.params.id);
+        return res.json(product);
+    },
+```
+##### Rota view
+Adicionar dentro do arquivo **routes.js** a roda do view com método GET
+
+```js
+    routes.get('/products/:id',ProductController.view);
+```
+##### Visualizando Produto via GET
+Através do Insomnia ou Postman, envie GET com :ID do produto para o endereço abaixo.
+
+    [http://localhost:3001/api/products/:id] 
+
+ou já completo
+
+    [http://localhost:3001/api/products/5e766094afc03b35d091ced6]
+
+Deverá retornar o produto cadastrado no Banco com o ID passado
+
+##### Adicionar o método Update
+No arquivo **ProductController.js**, adicionar o método abaixo, junto com os demais para que seja possível realizar a atualização de um produto pelo ID passado e retornar o novo produto.
+
+```js
+    //Método update - atualizar produto
+    async update(req,res){
+        //Atualiza produto pelo ID e os dados recebidos no Body. New é para retornar novo produto atualizado
+        const product = await Product.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        return res.json(product);
+    }
+```
+##### Rota update
+Adicionar dentro do arquivo **routes.js** a rota do update com método PUT
+
+```js
+    routes.put('/products/:id',ProductController.update);
+```
+##### Atualizar Produto via GET
+Através do Insomnia ou Postman, envie PUT passando :ID do produto  e também um JSON no body contendo o conteúdo a ser atualizado.
+
+**Endereço**
+    [http://localhost:3001/api/products/:id] 
+    ou
+    [http://localhost:3001/api/products/5e766094afc03b35d091ced6]
+
+**conteúdo**
+
+```json    
+    {
+        "title": "Empresa Rodrigo"
+    }
+```
+
+Deverá retornar o produto atualizado no Banco com o ID passado e novo conteúdo
+
+##### Adicionar o método delete
+No arquivo **ProductController.js**, adicionar o método abaixo, junto com os demais para que seja possível realizar a remoção de um produto pelo ID passado.
+
+```js
+    //Método delete - remover produto
+    async delete(req,res){
+        //Remove produto pelo ID 
+        await Product.findByIdAndRemove(req.params.id);
+        return res.send();
+    }
+```
+##### Rota Delete
+Adicionar dentro do arquivo **routes.js** a rota do delete com método DELETE
+
+```js
+    routes.delete('/products/:id',ProductController.delete);
+```
+##### Deletar Produto via DELETE
+Através do Insomnia ou Postman, envie DELETE passando :ID do produto.
+
+    [http://localhost:3001/api/products/:id] 
+    ou
+    [http://localhost:3001/api/products/5e766094afc03b35d091ced6]
+
+Deverá remover o produto do banco
