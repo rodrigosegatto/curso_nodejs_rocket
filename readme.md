@@ -230,3 +230,190 @@ Arquivo ficará coomo abaixo e ao salvar não poderá retornar erro no console d
     app.listen(3001);
 ```
 
+## Criando Model
+Model no padrão MVC é onde estarão contidas nossas classe de bancos de dados
+
+###### Model Produto
+Criar pasta 'src/models'
+
+Criar um arquivo chamado **Product.js** dentro de 'src/models'
+
+###### Conteúdo Model Produto
+Abaixo conteúdo do arquivo **Product.js**. É um modelo padrão para registro de um Model com mongoose.
+
+```js
+    const mongoose = require('mongoose');
+
+    const ProductSchema = new mongoose.Schema({
+        title: {
+            type: String,
+            required: true
+        },
+        description: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    });
+
+    mongoose.model('Product',ProductSchema);
+```
+##### Modulo require-dir
+Instalar o módulo **require-dir** de maneira que a aplicação sempre inclua os Modules, por exemplo na aplicação, sem necessidade de incluirmos manualmente arquivo por arquivo Parecido com Autoloader do PHP que carrega classes automaticamente.
+
+    npm install require-dir
+
+##### RequireDir no arquivo server.js
+Ajustar o arquivo server.js para que utilize o RequireDir e carregue os models
+
+Incluir: 
+
+    const requireDir = require('require-dir');
+
+e: 
+
+    requireDir('./src/models');
+
+##### Arquivo server.js
+Arquivo ficará como abaixo:
+
+```js
+    const express = require('express');
+    const mongoose = require('mongoose');
+    const requireDir = require('require-dir');
+
+    //Iniciando o App
+    const app = express();
+
+    //Iniciando o Banco de Dados
+    mongoose.connect(
+        'mongodb+srv://admin:admin@cluster0-nsbr3.mongodb.net/nodeapi?retryWrites=true&w=majority',
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+
+    //Carregando Modelos
+    requireDir('./src/models');
+
+    //Primeira Rota
+    app.get('/',(req, res) => {
+        res.send('Hello Segatto');
+    });
+
+    //Básicamente dizendo para a aplicação ouvir na porta 3001
+    app.listen(3001);
+```
+## Restruturando os arquivos
+
+##### Arquivo de Rotas
+Criar o arquivo **routes.js** dentro de './src'
+
+##### Conteúdo routes.js
+
+```js
+    const express = require('express');
+    const routes = express.Router();
+
+    //Rota raiz
+    routes.get('/',(req, res) => {
+        return res.send('Hello Segatto');
+    });
+
+    //Exportar as rotas
+    module.exports = routes;
+```
+##### Conteúdo server.js
+Restruturado código do **server.js** para que carregue o arquivo de rotas
+
+```js
+    const express = require('express');
+    const mongoose = require('mongoose');
+    const requireDir = require('require-dir');
+
+    //Iniciando o App
+    const app = express();
+
+    //Iniciando o Banco de Dados
+    mongoose.connect(
+        'mongodb+srv://admin:admin@cluster0-nsbr3.mongodb.net/nodeapi?retryWrites=true&w=majority',
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+
+    //Carregando Modelos
+    requireDir('./src/models');
+
+    // o Use é como um coringa que irá receber as requisições
+    //Não é necessario o uso do 'api', somente se quisermos que usuário acesse /api/Products por exemplo.
+    app.use('/api',require('./src/routes'));
+
+    //Básicamente dizendo para a aplicação ouvir na porta 3001
+    app.listen(3001);
+```
+##### Controllers
+Criar pasta **controllers** em './src/';
+
+##### Arquivo ProdutoController.js
+Criar arquivo **ProdutoController.js** em './src/controllers'
+
+##### Conteúdo ProdutoController.js
+
+```js
+    const mongoose = require('mongoose');
+    const Product = mongoose.model('Product');
+
+    module.exports = {
+        //Método index
+        async index(req, res) { 
+            //Busca produtos
+            const products = await Product.find();
+            
+            return res.json(products);
+        }
+    };
+```
+
+##### Rota para index de ProdutoController
+Ajustar o arquivo de rotas para permitir que seja acessada o método index()
+
+Incluir 
+
+```js
+    //Rota raiz de produtos
+    routes.get('/products',ProductController.index);
+```
+
+```js 
+    const express = require('express');
+    const routes = express.Router();
+
+    const ProductController = require('./controllers/ProductController');
+
+    routes.get('/',(req, res) => {
+        res.send('Hello Segatto');
+    });
+
+    //Rota raiz de produtos
+    routes.get('/products',ProductController.index); 
+
+    //Exportar as rotas
+    module.exports = routes;
+```
+
+##### Acesso
+Pronto. Pode ser acessada a rota através de [http://localhost:3001/api/products] ou [endereco:porta/api/products];
+
+## Utilizando Insomnia
+
+
