@@ -20,9 +20,11 @@ Abrir o terminal e verificar as versões do node e npm:
 
 ## Criando a estrutura
 No terminal, dentro da pasta do projeto, iremos criar a api:
+    
     mkdir node-api
 
 ###### Acessar a pasta
+    
     cd node-api
 
 ###### Criar o **package.json**.
