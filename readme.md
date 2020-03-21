@@ -3,17 +3,19 @@
     Utilizado para que possamos trabalhar o acesso a banco de dados e lógica da programação, servindo como uma APIRest para o frontEnd que poderá ser desenvolvido em Angular, React, etc...
 
 ###### Instalar NodeJS
-    Utilizar o site [https://nodejs.org/en/]
+Utilizar o site [https://nodejs.org/en/]
 
-    Ou através do gerenciador de pacotes, conforme link abaixo. escolha a versão do seu SO.
+Ou através do gerenciador de pacotes, conforme link abaixo. escolha a versão do seu SO.
 
-    [https://nodejs.org/en/download/package-manager/]
+[https://nodejs.org/en/download/package-manager/]
 
-    **Verificar se está instalado**
+**Verificar se está instalado**
 
-        Abrir o terminal e verificar as versões do node e npm: 
-            node -v
-            npm -v
+Abrir o terminal e verificar as versões do node e npm: 
+    ```
+    node -v
+    npm -v
+    ```
 
 ###### Criando a estrutura
     No terminal, dentro da pasta do projeto, iremos criar a api:
