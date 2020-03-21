@@ -234,9 +234,11 @@ Arquivo ficará coomo abaixo e ao salvar não poderá retornar erro no console d
 Model no padrão MVC é onde estarão contidas nossas classe de bancos de dados
 
 ###### Model Produto
-Criar pasta 'src/models'
+Criar pasta:
+    
+    'src/models'
 
-Criar um arquivo chamado **Product.js** dentro de 'src/models'
+Criar um arquivo chamado **Product.js** dentro de **'src/models'**
 
 ###### Conteúdo Model Produto
 Abaixo conteúdo do arquivo **Product.js**. É um modelo padrão para registro de um Model com mongoose.
