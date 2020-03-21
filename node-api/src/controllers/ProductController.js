@@ -8,7 +8,7 @@ module.exports = {
         //const products = await Product.find();
 
         //Busca de produtos com paginate
-        const {page = 1} = req.query; //Se não receber query, page é 1 por padrão
+        const {page = 1} = req.query; //Se não receber query (parâmetros GET), page é 1 por padrão
         const products = await Product.paginate({}, {page, limit: 10}); //page (desestruturação) = page: page
 
         return res.json(products);
