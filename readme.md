@@ -416,7 +416,7 @@ Arquivo final:
 ```
 
 ##### Acesso
-Pronto. Pode ser acessada a rota através de [http://localhost:3001/api/products] ou [endereco:porta/api/products];
+Pronto. Pode ser acessada a rota através de [http://localhost:3001/api/products] ou [endereco:porta/api/products]
 
 ## Utilizando Insomnia
 
