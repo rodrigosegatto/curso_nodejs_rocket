@@ -29,10 +29,12 @@ No terminal, dentro da pasta do projeto, iremos criar a api:
 
 ###### Criar o **package.json**.
 Utilizar o comando abaixo, permitindo trabalhar com dependências de outros fornecedores:
+    
     npm init -y
 
-###### Instalar a primeira dependência chamada **express**.
-Utilizar comando abaixo:
+###### Instalar a primeira dependência
+Utilizar comando abaixo para instalar a primeira dependência chamada **express**:
+    
     npm install express
 
 O Express irá auxiliar na utilização de rotas.
