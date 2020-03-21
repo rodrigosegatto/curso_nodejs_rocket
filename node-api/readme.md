@@ -592,3 +592,132 @@ Através do Insomnia ou Postman, envie DELETE passando :ID do produto.
     [http://localhost:3001/api/products/5e766094afc03b35d091ced6]
 
 Deverá remover o produto do banco
+
+## Paginação em Lista
+
+##### Mongoose-paginate
+Instalar mongoose-paginate para que os models retornem dados paginados
+
+    npm install mongoose-paginate
+
+##### Requerer mongoose-paginate no model
+No arquivo **Product.js** do model
+
+Na segunda linha adicionar:
+
+```js    
+    const mongoosePaginate = require('mongoose-paginate');
+```
+
+E ao final:
+
+```js
+    ProductSchema.plugin(mongoosePaginate);
+```
+Ficando o arquivo ao final desta forma: 
+
+```js
+    const mongoose = require('mongoose');
+    const mongoosePaginate = require('mongoose-paginate');
+
+    const ProductSchema = new mongoose.Schema({
+        title: {
+            type: String,
+            required: true
+        },
+        description: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    });
+
+    //Plugin de paginação
+    ProductSchema.plugin(mongoosePaginate);
+
+    mongoose.model('Product',ProductSchema);
+
+```
+##### Ajustar método index() com Paginate
+Alterar método dentro do arquivo **ProductController.js**
+
+```js
+    async index(req, res) { 
+        //Busca produtos normal
+        //const products = await Product.find();
+
+        //Busca de produtos com paginate
+        const {page = 1} = req.query; //Se não receber query (parâmetros GET), page é 1 por padrão
+        const products = await Product.paginate({}, {page, limit: 10}); //page (desestruturação) = page: page
+
+        return res.json(products);
+    }
+```
+Após, é possível fazer a requisição GET conforme já fizemos anteriormente, porém, agora passando parâmetros de paginação. 
+
+    http://localhost:3001/api/products?page=1
+
+## Adicionando CORS
+Permitir que a aplicação seja acessada por outros aplicativos (Allow). 
+Permitir outros domínios, diferentes de nosso servidor consultarem nossa API
+
+##### Instalando CORS
+Rodar comando no terminal:
+
+    npm install cors
+
+##### INstanciar cors
+No arquivo **server.js** chamar o cors 
+Incluir estas duas linhas dentro do arquivo.
+
+```js
+    const cors = require('cors'); // Primeiras linhas
+    app.use(cors()); //Após Iniciar App
+```
+
+Desta forma está sendo liberado acesso a qualquer domínio. 
+Pode-se ler a docuentação e dentro do cors() utilizar especificações para limitar o domínio que terá acesso a API. 
+
+Veja o arquivo **server.js** ao final: 
+
+```js 
+    const express = require('express');
+    const mongoose = require('mongoose');
+    const requireDir = require('require-dir');
+    const cors = require('cors');
+
+    //Iniciando o App
+    const app = express();
+    app.use(express.json());
+    app.use(cors());
+
+    //Iniciando o Banco de Dados
+    mongoose.connect(
+        'mongodb+srv://admin:admin@cluster0-nsbr3.mongodb.net/nodeapi?retryWrites=true&w=majority',
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+
+    //Carregando Modelos
+    requireDir('./src/models');
+
+    // o Use é como um coringa que irá receber as requisições
+    //Não é necessario o uso do 'api', somente se quisermos que usuário acesse /api/Products por exemplo.
+    app.use('/api',require('./src/routes'));
+
+    //Básicamente dizendo para a aplicação ouvir na porta 3001
+    app.listen(3001);
+```
+
+
+# PRONTO
+Curso finalizado, e foi possível aprender a criar uma API no padrão MVC utilizando NodeJS e alguns plugins.
