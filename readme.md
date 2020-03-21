@@ -46,12 +46,14 @@ Na raiz, criar o arquivo chamado: **server.js**.
 ###### Inserir o seguinte código: 
 Começar com o código básico abaixo apenas para subir o server
 
+```js
     const express = require('express');
 
     const app = express();
 
     //Básicamente dizendo para a aplicação ouvir na porta 3001
     app.listen(3001);
+```
 
 ###### Subir o server
     node server.js
@@ -64,13 +66,16 @@ Pronto. Podemos acessar através de **[http://localhost:3001/]**
 ###### Rota raiz /
 Utilizar o comando abaixo dentro do arquivo **server.js** para retornar um resultado ao acessar a raiz do servidor via GET.
 
+```js
     app.get('/',(req, res) => {
         res.send('Hello RocketSeat');
     });
+```
 
 **req** receberá todos os parâmetros e **res** retornará um resutlado
 Código final ficará assim: 
 
+```js
     const express = require('express');
 
     const app = express();
@@ -80,6 +85,7 @@ Código final ficará assim:
     });
 
     app.listen(3001);
+```
 
 ## Utilizando Nodemon
 Faz utomaticamente a reinicialização do servidor sempre que alterarmos alguma coisa no código.
@@ -92,14 +98,18 @@ Código abaixo, utilizando **-D** para utilizar somente como dependência de des
 ###### Config nodemon
 Acessar o arquivo **package.json** e incluir a linha abaixo dentro da tag **scripts**.
 
+```js
     "dev" : "nodemon server.js"
+```
 
 Ficará assim o trecho: 
 
+```js
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev" : "nodemon server.js"
     },
+```
 
 ###### Iniciar o server
 A partir de agora utilizaremos o comando abaixo para iniciar o server
@@ -164,4 +174,59 @@ Não consegui instalar o docker em minha máquina, pois meu windows 10 é versã
 2) Porém, o ideal, seria pelo menos criar uma máquina virtual Linux utilizando Virtual Box por exemplo e fazer as instalações do Docker e MongoBD com os passos acima dentro desta máquina Linux mesmo, levantando um server de banco de dados local ou no servidor da rede interna.
 
 ## Conexão com Database
+
+##### Instalar Mongoose
+Mongose é um ORM que irá encapsular a lógica das operações do BD através do código.
+Ao invés de utilizar querys com a linguagem natural do banco de dados (INSERT INTO....), utilizaremos apenas a linguagem JS para fazer Insert, update, delete, etc...
+
+    npm install mongoose
+
+##### Importar no arquivo server.js
+Inserir a linha de código abaixo dentro do arquivo **server.js** para importar o mongoose.
+
+```js
+    const mongoose = require('mongoose');
+```
+
+##### Iniciando o Banco de Dados
+Colocar linha de código com dados de conexão com banco:
+
+```js
+    mongoose.connect(
+        'mongodb+srv://admin:admin@cluster0-nsbr3.mongodb.net/nodeapi?retryWrites=true&w=majority',
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+```
+
+Substituir **nodeapi** pelo nome de seu banco de dados.
+Substituir **admin:admin** pelo seu usuario e senha.
+
+Arquivo ficará coomo abaixo e ao salvar não poderá retornar erro no console do terminal que está rodando o server nodeJs:
+```js
+    const express = require('express');
+    const mongoose = require('mongoose');
+
+    //Iniciando o App
+    const app = express();
+
+    //Iniciando o Banco de Dados
+    mongoose.connect(
+        'mongodb+srv://admin:admin@cluster0-nsbr3.mongodb.net/nodeapi?retryWrites=true&w=majority',
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+
+    //Primeira Rota
+    app.get('/',(req, res) => {
+        res.send('Hello Segatto');
+    });
+
+    //Básicamente dizendo para a aplicação ouvir na porta 3001
+    app.listen(3001);
+```
 
