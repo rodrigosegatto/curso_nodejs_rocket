@@ -156,12 +156,12 @@ Utilizar o software Robo3T que é um gerenciador SGDB.
 ##### Download Robo3T
 Acessar [https://robomongo.org/download]
 
-Instalar o Mongo3T e adicionar conexão ao banco de dados loca.
+Instalar o Mongo3T e adicionar conexão ao banco de dados local.
 
 **IMPORTANT!**
-Não consegui instalar o docker em minha máquina, pois meu windows é 10 Home e não é suportado pelo Hiper-v.
-POr isto criei no site do MongoDB um cloud gratuido, onde me disponibilizam um container do mongo.
-Porém, o ideal, seria pelo menos criar uma máquina virtual Linux utilizando Virtual Box por exemplo e fazer as instalações do Docker e MongoBD com os passos acima dentro desta máquina Linux mesmo, levantando um server de banco de dados local ou no servidor da rede interna.
+Não consegui instalar o docker em minha máquina, pois meu windows 10 é versão **Home** e não é suportado pelo Hiper-v. É comum que isto ocorra. 
+1) Uma das possibilidades é criar no site do MongoDB um cloud gratuido, onde disponibilizam um container com MongoDB instalado e pronto para criar collections.
+2) Porém, o ideal, seria pelo menos criar uma máquina virtual Linux utilizando Virtual Box por exemplo e fazer as instalações do Docker e MongoBD com os passos acima dentro desta máquina Linux mesmo, levantando um server de banco de dados local ou no servidor da rede interna.
 
 ## Conexão com Database
 
