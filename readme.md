@@ -396,6 +396,8 @@ Incluir
     routes.get('/products',ProductController.index);
 ```
 
+Arquivo final:
+
 ```js 
     const express = require('express');
     const routes = express.Router();
